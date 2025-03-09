@@ -118,7 +118,7 @@ function generateTruthTable() {
 
         // Atribuir valores para cada variável (0 ou 1)
         for (let j = 0; j < variables.length; j++) {
-            row[variables[j]] = (i >> (variables.length - j - 1)) & 1;
+            row[variables[j]] = ((numRows - i - 1) >> (variables.length - j - 1)) & 1;
         }
 
         // Avaliar a expressão com os valores atuais
