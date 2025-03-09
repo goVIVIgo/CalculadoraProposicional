@@ -60,29 +60,29 @@ function evaluateLogicalExpression(expression, values) {
     }
 
     // Converter símbolos lógicos para operadores em texto
-    expr = expr.replace(/¬/g, 'NOT ');
+    expr = expr.replace(/¬/g, 'NOT');
     expr = expr.replace(/∧/g, ' AND ');
     expr = expr.replace(/∨/g, ' OR ');
     expr = expr.replace(/↔/g, ' BICONDITIONAL ');
     expr = expr.replace(/\<=>/g, ' BICONDITIONAL ');
     expr = expr.replace(/→/g, ' IMPLIES ');
     expr = expr.replace(/\=>/g, ' IMPLIES ');
-    
+
 
     try {
         // Substituir operadores por chamadas de função
         // Primeiro tratamos o NOT que é unário
         expr = expr.replace(/NOT\s+(\d)/g, 'NOT($1)');
-        
+
         // Depois os operadores binários
         expr = expr.replace(/(\d)\s+AND\s+(\d)/g, 'AND($1,$2)');
         expr = expr.replace(/(\d)\s+OR\s+(\d)/g, 'OR($1,$2)');
         expr = expr.replace(/(\d)\s+IMPLIES\s+(\d)/g, 'IMPLIES($1,$2)');
         expr = expr.replace(/(\d)\s+BICONDITIONAL\s+(\d)/g, 'BICONDITIONAL($1,$2)');
-        
+
         // Tratar parênteses e expressões com múltiplos operadores
         // Isso é uma simplificação - expressões complexas podem precisar de um parser mais avançado
-        
+
         // Avaliar a expressão como código JavaScript
         return Function('NOT', 'AND', 'OR', 'IMPLIES', 'BICONDITIONAL', 'return ' + expr)(NOT, AND, OR, IMPLIES, BICONDITIONAL);
     } catch (error) {
@@ -94,38 +94,38 @@ function evaluateLogicalExpression(expression, values) {
 // Função para gerar a tabela verdade
 function generateTruthTable() {
     const expressionInput = document.getElementById('expression').value;
-    
+
     if (!expressionInput) {
         alert("Por favor, insira uma expressão lógica.");
         return;
     }
-    
+
     // Extrair variáveis únicas da expressão
-    const variableMatches = expressionInput.match(/[A-F]/g) || [];
+    const variableMatches = expressionInput.match(/[A-Z]/g) || [];
     const variables = [...new Set(variableMatches)];
-    
+
     if (variables.length === 0) {
         alert("A expressão não contém variáveis válidas.");
         return;
     }
-    
+
     // Criar tabela verdade
     const truthTable = [];
     const numRows = Math.pow(2, variables.length);
-    
+
     for (let i = 0; i < numRows; i++) {
         const row = {};
-        
+
         // Atribuir valores para cada variável (0 ou 1)
         for (let j = 0; j < variables.length; j++) {
             row[variables[j]] = (i >> (variables.length - j - 1)) & 1;
         }
-        
+
         // Avaliar a expressão com os valores atuais
         row['result'] = evaluateLogicalExpression(expressionInput, row);
         truthTable.push(row);
     }
-    
+
     // Exibir a tabela verdade
     displayTruthTable(truthTable, variables);
 }
@@ -137,7 +137,7 @@ function displayTruthTable(truthTable, variables) {
         table += `<th>${variable}</th>`;
     });
     table += '<th>Resultado</th></tr>';
-    
+
     truthTable.forEach(row => {
         table += '<tr>';
         variables.forEach(variable => {
@@ -145,7 +145,7 @@ function displayTruthTable(truthTable, variables) {
         });
         table += `<td>${row['result']}</td></tr>`;
     });
-    
+
     table += '</table>';
     document.getElementById('result').innerHTML = table;
 }
