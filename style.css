@@ -1,101 +1,161 @@
+/* Estilo para o corpo da página */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+    font-family: Arial, sans-serif; /* Define a fonte da página */
+    display: flex; /* Usamos o modelo de layout flexível */
+    justify-content: center; /* Alinha os elementos horizontalmente ao centro */
+    align-items: center; /* Alinha os elementos verticalmente ao centro */
+    height: 100vh; /* Define a altura do body como 100% da altura da tela */
+    margin: 0; /* Remove qualquer margem padrão do body */
+    background-color: #f0f0f0; /* Define a cor de fundo como cinza claro */
 }
 
+/* Estilo para o título da página */
 h1 {
-    text-align: center;
-    color: #fdee61;
+    text-align: center; /* Alinha o texto do título ao centro */
+    color: #fdee61; /* Define a cor do texto como amarelo */
 }
 
+/* Estilo para o contêiner da calculadora */
 .calculator {
-    background: rgb(248, 188, 250);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
+    background: rgb(248, 188, 250); /* Define o fundo como uma cor roxa claro */
+    padding: 20px; /* Adiciona 20px de espaçamento interno */
+    border-radius: 10px; /* Arredonda as bordas com raio de 10px */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
+    text-align: center; /* Alinha o texto dentro da calculadora ao centro */
+    width: 300px; /* Define a largura da calculadora como 300px */
 }
 
+/* Estilo para a tela onde a expressão é exibida */
 .screen {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Adiciona uma margem de 20px na parte inferior */
 }
 
+/* Estilo para o campo de entrada (input) */
 input {
-    width: 100%;
-    padding: 4px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: right;
-    font-size: 1.2em;
+    width: 100%; /* Define a largura do campo de entrada como 100% do contêiner */
+    height: 40px; /* Define a altura do campo de entrada como 40px */
+    padding: 5.9px 0.1px; /* Aplica padding de 5.9px no topo e 0.1px nas laterais */
+    border: 3px solid #ffffff; /* Define uma borda sólida branca de 3px */
+    border-radius: 5px; /* Arredonda as bordas do input com raio de 5px */
+    text-align: right; /* Alinha o texto dentro do campo de entrada à direita */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o tamanho padrão */
 }
 
+/* Estilo para o contêiner de botões */
 .buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    display: grid; /* Usamos uma grid (grade) para organizar os botões */
+    grid-template-columns: repeat(4, 1fr); /* Define 4 colunas de largura igual */
+    gap: 10px; /* Adiciona 10px de espaçamento entre os botões */
 }
 
+/* Estilo geral para os botões */
 button {
-    padding: 20px;
-    border: none;
+    padding: 20px; /* Adiciona 20px de espaçamento interno nos botões */
+    border: none; /* Remove a borda padrão dos botões */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil nos botões */
 }
 
+/* Efeito de hover nos botões (quando o usuário passa o mouse sobre eles) */
+button:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Aumenta a sombra para criar um efeito de foco */
+}
+
+/* Efeito de clique nos botões (quando o usuário clica neles) */
+button:active {
+    transform: translateY(4px); /* Faz o botão "afundar" levemente para baixo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduz a sombra para dar o efeito de pressão */
+}
+
+/* Estilo para o botão "Letra" */
 .buttonLetra {
-    background: #8efda1;
-    color: rgb(253, 154, 237);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2em;
+    background: #8efda1; /* Define o fundo do botão como verde claro */
+    color: rgb(253, 154, 237); /* Define a cor do texto como roxo claro */
+    border-radius: 5px; /* Arredonda as bordas do botão com raio de 5px */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o padrão */
 }
 
+/* Efeito de hover no botão "Letra" */
 .buttonLetra:hover {
-    background: #54f86f;
+    background: #54f86f; /* Muda a cor de fundo para um verde mais escuro ao passar o mouse */
 }
 
+/* Estilo para o botão "Exp" */
 .buttonExp {
-    background: #fafc8b;
-    color: rgb(253, 154, 237);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2em;
+    background: #fafc8b; /* Define o fundo do botão como amarelo claro */
+    color: rgb(253, 154, 237); /* Define a cor do texto como roxo claro */
+    border-radius: 5px; /* Arredonda as bordas do botão com raio de 5px */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o padrão */
 }
 
+/* Efeito de hover no botão "Exp" */
 .buttonExp:hover {
-    background: #f2fd55;
+    background: #f2fd55; /* Muda a cor de fundo para um amarelo mais forte */
 }
 
+/* Estilo para o botão "C" (clear) */
 .buttonC {
-    background: #ff5959;
-    color: #f2fd55;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2em;
+    background: #ff5959; /* Define o fundo do botão como vermelho */
+    color: #f2fd55; /* Define a cor do texto como amarelo */
+    border-radius: 5px; /* Arredonda as bordas do botão com raio de 5px */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o padrão */
 }
 
+/* Efeito de hover no botão "C" */
 .buttonC:hover {
-    background: #fd3c3c;
+    background: #fd3c3c; /* Muda a cor de fundo para um vermelho mais escuro */
 }
 
+/* Estilo para o botão "Table" */
 .buttonTable {
-    background: #58acfc;
-    color: #f2fd55;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2em;
+    background: #6eb7fc; /* Define o fundo do botão como azul claro */
+    color: #f2fd55; /* Define a cor do texto como amarelo */
+    border-radius: 5px; /* Arredonda as bordas do botão com raio de 5px */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o padrão */
 }
 
+/* Efeito de hover no botão "Table" */
 .buttonTable:hover {
-    background: #31a1fd;
+    background: #31a1fd; /* Muda a cor de fundo para um azul mais forte */
 }
 
+/* Estilo para o botão "Del" (delete) */
+.buttonDel {
+    background: #ff5959; /* Define o fundo do botão como vermelho */
+    color: #f2fd55; /* Define a cor do texto como amarelo */
+    border-radius: 5px; /* Arredonda as bordas do botão com raio de 5px */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    font-size: 1.2em; /* Define o tamanho da fonte como 1.2 vezes o padrão */
+}
+
+/* Efeito de hover no botão "Del" */
+.buttonDel:hover {
+    background: #fd3c3c; /* Muda a cor de fundo para um vermelho mais escuro */
+}
+
+/* Estilo para o resultado */
 #result {
-    margin-top: 20px;
-    font-size: 1.5em;
-    color: #fffefe;
+    margin-top: 20px; /* Adiciona margem no topo do resultado */
+    font-size: 1.5em; /* Define o tamanho da fonte do resultado como 1.5 vezes o padrão */
+    color: rgb(248, 188, 250); /* Define a cor do texto como uma cor roxa claro */
+}
+
+/* Estilo para as linhas da tabela de resultados */
+#result tr:nth-child(odd) {
+    background-color: #fafc8b; /* Define a cor de fundo das linhas ímpares como amarelo claro */
+}
+
+#result tr:nth-child(even) {
+    background-color: #fafc8b; /* Define a cor de fundo das linhas pares também como amarelo claro */
+}
+
+/* Estilo para as células da tabela (tanto as células de dados quanto as cabeçalhos) */
+#result td, #result th {
+    padding: 10px; /* Adiciona 10px de espaçamento interno nas células */
+    border: 1px solid rgb(248, 188, 250); /* Define a borda das células como uma linha fina e cor roxa */
+    border-radius: 5px; /* Arredonda as bordas das células */
+    text-align: left; /* Alinha o texto à esquerda dentro das células */
 }

@@ -2,18 +2,19 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Proposicional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Torna a página responsiva em dispositivos móveis -->
+    <title>Calculadora Proposicional</title><!-- Define o título da página que será exibido na aba do navegador -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="calculator">
-        <h1>Calculadora Proposicional</h1>
-        <div class="screen">
-            <input type="text" id="expression" readonly>
+        <h1>Calculadora Proposicional</h1><!-- Título da calculadora visível para o usuário -->
+        <div class="screen"><!-- Div que contém a tela de exibição da expressão -->
+            <input type="text" id="expression" readonly><!-- Campo de texto onde a expressão é mostrada, mas não pode ser editada diretamente -->
         </div>
         <div class="buttons">
-            <button class = "buttonLetra" onclick="appendCharacter('A')">A</button>
+            <!-- Botões de A a Z para representar variáveis proposicionais -->
+            <button class = "buttonLetra" onclick="appendCharacter('A')">A</button><!-- Botão para a variável -->
             <button class = "buttonLetra" onclick="appendCharacter('B')">B</button>
             <button class = "buttonLetra" onclick="appendCharacter('C')">C</button>
             <button class = "buttonLetra" onclick="appendCharacter('D')">D</button>
@@ -39,6 +40,7 @@
             <button class = "buttonLetra" onclick="appendCharacter('X')">X</button>
             <button class = "buttonLetra" onclick="appendCharacter('Y')">Y</button>
             <button class = "buttonLetra" onclick="appendCharacter('Z')">Z</button>
+            <!-- Botões para operadores lógicos e parênteses -->
             <button class = "buttonExp" onclick="appendCharacter('!')">¬</button>
             <button class = "buttonExp" onclick="appendCharacter('&')">∧</button>
             <button class = "buttonExp" onclick="appendCharacter('|')">V</button>
@@ -46,10 +48,12 @@
             <button class = "buttonExp" onclick="appendCharacter('<=>')">↔</button>
             <button class = "buttonExp" onclick="appendCharacter('(')">(</button>
             <button class = "buttonExp" onclick="appendCharacter(')')">)</button>
+            <!-- Botões de controle -->
             <button class = "buttonC" onclick="clearExpression()">C</button>
+            <button class = "buttonDel" onclick="deleteCharacter()"><</button>
             <button class = "buttonTable" onclick="generateTruthTable()">=</button>
         </div>
-        <div id="result"></div>
+        <div id="result"></div><!-- Div onde a tabela verdade ou resultados serão exibidos -->
     </div>
     <script src="script.js"></script>
 </body>
