@@ -60,89 +60,81 @@ function BICONDITIONAL(a, b) {
     }
 }
 
-// Função para avaliar a expressão lógica
 function evaluateLogicalExpression(expression, values) {
-    // Criar uma cópia da expressão para trabalhar
-    var expr = expression;
+    // Substituir as variáveis pelos seus valores (assumindo que são 0 ou 1)
+for (let variable in values) {
+    let re = new RegExp('\\b' + variable + '\\b', 'g');
+    expression = expression.replace(re, values[variable]);
+}
 
-    // Substituir variáveis pelos seus valores
-    for (var variable in values) {
-        var regex = new RegExp('\\b' + variable + '\\b', 'g'); //A expressão regular \\b garante que apenas variáveis completas sejam substituídas, evitando conflitos com partes de outras variáveis ou palavras.
-        expr = expr.replace(regex, values[variable]);
-    }
+// Substituir os símbolos lógicos por palavras (para facilitar o processamento)
+expression = expression
+    .replace(/&/g, ' AND ')
+    .replace(/<=>/g, ' BICONDITIONAL ')
+    .replace(/=>/g, ' IMPLIES ')
+    .replace(/¬/g, ' NOT ')
+    .replace(/∧/g, ' AND ')
+    .replace(/∨/g, ' OR ');
 
-    // Converter símbolos lógicos para operadores em texto
-    //é importante deixar o bicondicional primeiro, pois ele contém o sinal de igual, que pode ser comido pelo replace do condicional.
-    expr = expr.replace(/¬/g, 'NOT');
-    expr = expr.replace(/∧/g, ' AND ');
-    expr = expr.replace(/∨/g, ' OR ');
-    expr = expr.replace(/↔/g, ' BICONDITIONAL ');
-    expr = expr.replace(/\<=>/g, ' BICONDITIONAL ');
-    expr = expr.replace(/→/g, ' IMPLIES ');
-    expr = expr.replace(/\=>/g, ' IMPLIES ');
-
-
-    try {
-        // Substituir operadores por chamadas de função
-        // Primeiro tratamos o NOT que é unário
-        expr = expr.replace(/NOT\s+(\d)/g, 'NOT($1)');
-
-        // Depois os operadores binários
-        expr = expr.replace(/(\d)\s+AND\s+(\d)/g, 'AND($1,$2)');
-        expr = expr.replace(/(\d)\s+OR\s+(\d)/g, 'OR($1,$2)');
-        expr = expr.replace(/(\d)\s+IMPLIES\s+(\d)/g, 'IMPLIES($1,$2)');
-        expr = expr.replace(/(\d)\s+BICONDITIONAL\s+(\d)/g, 'BICONDITIONAL($1,$2)');
-
-        //(\d): O \d corresponde a qualquer dígito (0-9), e o parêntese () cria um grupo de captura. O valor encontrado dentro desse grupo será referenciado na substituição.
-        //\s+: O \s+ corresponde a um ou mais espaços em branco (como espaços, tabulações, etc.).
-        //(\d): Mais uma vez, o (\d) captura um número (um dígito).
-        //g: O modificador "global" permite que a substituição seja feita em todas as ocorrências, não apenas na primeira.
-        //$1 e $2 são referências aos grupos de captura da expressão regular.
-        //$1 é o primeiro número
-        //$2 é o segundo número
-        //O resultado da substituição será uma string no formato "AND(numero1,numero2)"
-
-        // Tratar parênteses e expressões com múltiplos operadores
-        // Isso é uma simplificação - expressões complexas podem precisar de um parser mais avançado
-
-        // Avaliar a expressão como código JavaScript
-        //A função usa Function() para criar uma função dinâmica a partir da expressão lógica e executa essa função.
-        // Ela passa as funções lógicas (NOT, AND, etc.) como parâmetros para a avaliação. Se ocorrer um erro, ele é capturado e uma mensagem de erro é exibida
-        return Function('NOT', 'AND', 'OR', 'IMPLIES', 'BICONDITIONAL', 'return ' + expr)(NOT, AND, OR, IMPLIES, BICONDITIONAL);
-    } catch (error) {
-        console.error("Erro na avaliação da expressão:", error);
-        return "Erro";
+// Função auxiliar para aplicar repetidamente um regex até não haver mais substituições
+function replaceOperator(pattern, replacement) {
+    while (pattern.test(expression)) {
+    expression = expression.replace(pattern, replacement);
     }
 }
 
+// Definindo um padrão para "operandos" que podem ser um dígito ou uma chamada de função já formada.
+// (Note que esse padrão não trata recursivamente parênteses aninhados, mas serve para expressões simples.)
+const operandPattern = '(?:\\d+|[A-Z]+\\([^()]*\\))';
+
+// Aplicar as substituições na ordem de precedência:
+
+replaceOperator(new RegExp('NOT\\s+(' + operandPattern + ')', 'g'), 'NOT($1)');
+
+replaceOperator(new RegExp('(' + operandPattern + ')\\s+AND\\s+(' + operandPattern + ')', 'g'), 'AND($1,$2)');
+
+replaceOperator(new RegExp('(' + operandPattern + ')\\s+OR\\s+(' + operandPattern + ')', 'g'), 'OR($1,$2)');
+
+replaceOperator(new RegExp('(' + operandPattern + ')\\s+IMPLIES\\s+(' + operandPattern + ')', 'g'), 'IMPLIES($1,$2)');
+
+replaceOperator(new RegExp('(' + operandPattern + ')\\s+BICONDITIONAL\\s+(' + operandPattern + ')', 'g'), 'BICONDITIONAL($1,$2)');
+
+// Agora, a expressão foi transformada em chamadas de função aninhadas de acordo com a precedência desejada.
+// Exemplo: "A&B<=>C" (supondo A=1, B=1, C=1) vira "BICONDITIONAL(AND(1,1),1)"
+try {
+    return Function('NOT','AND','OR','IMPLIES','BICONDITIONAL', 'return ' + expression)
+        (NOT, AND, OR, IMPLIES, BICONDITIONAL);
+} catch (e) {
+    console.error("Erro na avaliação da expressão:", e);
+    return "Erro";
+}
+}
+
+// Função para gerar a tabela verdade
 // Função para gerar a tabela verdade
 function generateTruthTable() {
     // Obter a expressão lógica do campo de entrada
     var expressionInput = document.getElementById('expression').value;
 
-    //Se a expressão estiver vazia, a função exibe um alerta pedindo para o usuário inserir uma expressão.
+    // Se a expressão estiver vazia, a função exibe um alerta pedindo para o usuário inserir uma expressão.
     if (!expressionInput) {
         alert("Por favor, insira uma expressão lógica.");
         return;
     }
 
     // Extrair variáveis únicas da expressão
-    //Aqui, a função extrai as variáveis da expressão (assumindo que sejam letras maiúsculas de A a Z) e cria um array com essas variáveis, removendo duplicatas usando o Set.
     var variableMatches = expressionInput.match(/[A-Z]/g) || [];
     var variables = [...new Set(variableMatches)];
 
-    if (variables.length === 0) { //Se não houver variáveis, exibe um alerta informando que a expressão não contém variáveis válidas.
+    if (variables.length === 0) { // Se não houver variáveis, exibe um alerta informando que a expressão não contém variáveis válidas.
         alert("A expressão não contém variáveis válidas.");
         return;
     }
 
     // Criar tabela verdade
-    // A função cria uma tabela verdade. numRows calcula o número de linhas da tabela com base no número de variáveis (2^n, onde n é o número de variáveis).
     var truthTable = [];
     var numRows = Math.pow(2, variables.length);
 
-
-    //O loop percorre cada linha da tabela verdade. Para cada linha, ele cria um objeto row com as variáveis e seus valores (0 ou 1) e o resultado da expressão lógica para esses valores.
     for (var i = 0; i < numRows; i++) {
         var row = {};
 
@@ -152,34 +144,43 @@ function generateTruthTable() {
         }
 
         // Avaliar a expressão com os valores atuais
-        //A função evaluateLogicalExpression é chamada para avaliar a expressão lógica com os valores atuais das variáveis. O resultado é armazenado no objeto row.
         row['result'] = evaluateLogicalExpression(expressionInput, row);
         truthTable.push(row);
     }
 
-    // Exibir a tabela verdade
-    displayTruthTable(truthTable, variables);
+    // Exibir a tabela verdade com a expressão inserida como cabeçalho
+    displayTruthTable(truthTable, variables, expressionInput);
 }
 
 // Função para exibir a tabela verdade no HTML
-//Essa função cria a estrutura HTML para exibir a tabela verdade. Primeiro, ela cria a linha de cabeçalho com as variáveis e a coluna "Resultado"
-function displayTruthTable(truthTable, variables) {
-    var table = '<table><tr>';
+function displayTruthTable(truthTable, variables, expressionInput) {
+    var table = '<table>';
+
+    // Exibir as variáveis como cabeçalhos
     variables.forEach(variable => {
         table += `<th>${variable}</th>`;
     });
-    table += '<th>Resultado</th></tr>';
 
+    // Adicionar a coluna para a expressão inserida
+    table += `<th>${expressionInput}</th>`;
+    table += '</tr>';
+
+    // Adicionar uma linha para cada linha da tabela verdade
     truthTable.forEach(row => {
         table += '<tr>';
+        
+        // Exibir os valores das variáveis
         variables.forEach(variable => {
             table += `<td>${row[variable]}</td>`;
         });
+
+        // Exibir o resultado final da expressão
         table += `<td>${row['result']}</td></tr>`;
     });
 
     table += '</table>';
     document.getElementById('result').innerHTML = table;
 }
+
 //Para cada linha da tabela verdade, a função adiciona uma nova linha HTML (<tr>) com os valores das variáveis e o resultado da expressão.
 //  No final, a tabela é exibida no elemento #result da página.
